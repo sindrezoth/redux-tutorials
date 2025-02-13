@@ -197,6 +197,11 @@ main h2 {
   border: none;
 }
 
+.todo-filter-status button.current {
+
+  text-decoration: underline;
+}
+
 .todo-filter-status button:hover {
   text-decoration: underline;
 }
@@ -219,10 +224,17 @@ main h2 {
   text-transform: capitalize;
 }
 
-.todo-filter-color input{
+.todo-filter-color input {
   height: 1em;
   width: 1em;
   margin-right: 0.5em;
+}
+
+.todo-filter-color button {
+  font: inherit;
+  width: 100%;
+  background-color: rebeccapurple;
+  color: papayawhip;
 }
 
 @media (width < 1000px) {

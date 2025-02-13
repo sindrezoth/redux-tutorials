@@ -8,10 +8,8 @@ import { StatusFilters } from '../features/filters/filterSlice.js';
 
 const TodoFilters = () => {
   const dispatch = useDispatch();
-  const todosRemaining = useSelector(state => {
-    const uncompletedTodos = state.todos.filter(todo => !todo.completed);
-    return uncompletedTodos.length;
-  });
+
+  const todosRemaining = useSelector(state => state.todos.filter(todo => !todo.completed).length);
 
   const { status, colors } = useSelector(state => state.filters);
 
@@ -20,16 +18,46 @@ const TodoFilters = () => {
   }
 
   const onColorChange = e => {
-    console.log(e.target.name);
-    dispatch({type: 'filters/colorFilterChanged', payload: { color: e.target.name, changeType: e.target.checked ? 'Add' : 'Delete' }});
+    if(e.target.name === 'toggle'){
+      if(colors.length) {
+        colors.forEach(color => {
+          dispatch({
+            type: 'filters/colorFilterChanged', 
+            payload: { color: color, changeType: 'Delete' }
+          });
+        })
+      }
+      else {
+        availableColors.forEach(color => {
+          dispatch({
+            type: 'filters/colorFilterChanged', 
+            payload: { color: color, changeType: 'Add' }
+          });
+        })
+      }
+    }
+    else {
+      dispatch({
+        type: 'filters/colorFilterChanged', 
+        payload: { color: e.target.name, changeType: e.target.checked ? 'Add' : 'Delete' }
+      });
+    }
+  }
+
+  const onAllCompletedHandle = () => {
+    dispatch({ type: 'todos/todoAllCompleted' });
+  }
+
+  const onClearCompletedHandle = () => {
+    dispatch({ type: 'todos/todoDeleted', payload: 'all' });
   }
 
   return (
       <section className="todo-filters">
         <div className="todo-actions">
           <h4>Actions</h4>
-          <button>Mark All Completed</button>
-          <button>Clear Completed</button>
+          <button onClick={onAllCompletedHandle}>Mark All Completed</button>
+          <button onClick={onClearCompletedHandle}>Clear Completed</button>
         </div>
         <RemainingTodos count={ todosRemaining } />
         <StatusFilter value={ status } onChange={ onStatusChange } />

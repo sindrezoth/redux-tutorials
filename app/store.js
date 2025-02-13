@@ -8,7 +8,7 @@
 //
 //export default store;
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../features/reducer.js';
 
 let preloadedState;
@@ -20,6 +20,20 @@ if(persistedTodosString) {
   }
 }
 
-const store = createStore(rootReducer, preloadedState);
+const mw = applyMiddleware(attentionMessage);
+
+const store = createStore(rootReducer, preloadedState, mw);//, attentionMessage);
 
 export default store;
+
+function attentionMessage(storeAPI) {
+  return (next) => {
+    return (action) => {
+      //console.log(storeAPI.getState());
+      const res = next(action);
+      //console.log(res);
+      //console.log(storeAPI.getState());
+      return res;
+    }
+  }
+}

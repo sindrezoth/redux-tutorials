@@ -9,8 +9,8 @@ const TodoInput = () => {
 
   const handleKeyDown = e => {
     const trimmedText = text.trim();
+    console.log(trimmedText)
     if((e.type === 'click' || e.key === 'Enter') && trimmedText.length > 0) {
-      console.log(trimmedText);
       dispatch({type: 'todos/todoAdded', payload: trimmedText});
       setText('');
     }

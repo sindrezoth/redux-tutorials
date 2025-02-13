@@ -1,3 +1,5 @@
+import { availableColors } from './colors.js';
+
 const initalState =  {
   status: 'All',
   colors: []
